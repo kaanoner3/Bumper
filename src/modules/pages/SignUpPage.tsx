@@ -6,6 +6,8 @@ import {
   Dimensions,
   Animated,
   Image,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
 import InputAtom from '../atoms/InputAtom';
 import { SharedElement } from 'react-navigation-shared-element';
@@ -16,15 +18,36 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import CarLogo from '../../../assets/car-example.png';
 import ButtonAtom from '../atoms/ButtonAtom';
 import SignUpFormMolecule from '../molecules/SignUpFormMolecule';
+import useKeyboardVisible from '../../hooks/useKeyboardVisible';
 
 const SignUpPage = ({}) => {
   const navigation = useNavigation();
   const [shouldStartAimate, setShouldStartAnimate] = useState(false);
   const [shouldHideForm, setShouldHideForm] = useState(true);
   const animatedValue = useRef(new Animated.Value(0)).current;
+  const animatedValueForKeyobard = useRef(new Animated.Value(0)).current;
+
+  const keyboardVisible = useKeyboardVisible();
 
   const route = useRoute();
   const { text } = route.params;
+
+  useEffect(() => {
+    console.log(keyboardVisible)
+    if (keyboardVisible) {
+      Animated.timing(animatedValueForKeyobard, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    } else {
+      Animated.timing(animatedValueForKeyobard, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start();
+    }
+  }, [keyboardVisible]);
 
   useEffect(() => {
     if (shouldStartAimate) {
@@ -90,63 +113,74 @@ const SignUpPage = ({}) => {
       },
     ],
   };
-
+  const translateScreen = {
+    transform: [
+      {
+        translateY: animatedValueForKeyobard.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, -150],
+        }),
+      },
+    ],
+  };
   return (
     <SafeAreaView style={[styles.container]}>
       <HeaderMolecule
         title="Sign Up"
         leftButtonAction={() => navigation.goBack()}
       />
-      <Animated.View style={[styles.contentView, { height: animatedHeight }]}>
-        <View style={{ flex: 1, padding: 10 }}>
-          <SharedElement id="input-atom">
-            <InputAtom
-              editable={false}
-              value={text}
-              placeholder="ENTER REG"
-              customStyle={styles.inputStyle}
-            />
-          </SharedElement>
-          <Animated.View style={positionDisappear}>
-            <TextAtom
-              customStyle={{ marginTop: 10, fontSize: 16 }}
-              text="Is this your vehicle?"
-            />
-          </Animated.View>
-          <View style={[{ flex: 1 }]}>
-            <Animated.View>
-              <Animated.Text style={[styles.largeText, translateY]}>
-                Scirocco 2019
-              </Animated.Text>
-              <Animated.Text style={[styles.smallText, translateY]}>
-                Volkswagen
-              </Animated.Text>
-            </Animated.View>
-            <Animated.View style={[styles.imageView, translateImageView]}>
-              <Animated.Image
-                source={CarLogo}
-                style={[styles.imageStyle, scaleImage]}
+      <Animated.View style={translateScreen}>
+        <Animated.View style={[styles.contentView, { height: animatedHeight }]}>
+          <View style={{ flex: 1, padding: 10 }}>
+            <SharedElement id="input-atom">
+              <InputAtom
+                editable={false}
+                value={text}
+                placeholder="ENTER REG"
+                customStyle={styles.inputStyle}
+              />
+            </SharedElement>
+            <Animated.View style={positionDisappear}>
+              <TextAtom
+                customStyle={{ marginTop: 10, fontSize: 16 }}
+                text="Is this your vehicle?"
               />
             </Animated.View>
+            <View style={[{ flex: 1 }]}>
+              <Animated.View>
+                <Animated.Text style={[styles.largeText, translateY]}>
+                  Scirocco 2019
+                </Animated.Text>
+                <Animated.Text style={[styles.smallText, translateY]}>
+                  Volkswagen
+                </Animated.Text>
+              </Animated.View>
+              <Animated.View style={[styles.imageView, translateImageView]}>
+                <Animated.Image
+                  source={CarLogo}
+                  style={[styles.imageStyle, scaleImage]}
+                />
+              </Animated.View>
+            </View>
           </View>
-        </View>
 
-        <Animated.View style={[styles.buttonGroupView, positionDisappear]}>
-          <ButtonAtom
-            customStyles={styles.leftButtonStyle}
-            text="No"
-            buttonTextStyle={{ fontSize: 14 }}
-            onPress={() => navigation.goBack()}
-          />
-          <ButtonAtom
-            customStyles={styles.rightButtonStyle}
-            text="Yes Let's Go"
-            buttonTextStyle={{ fontSize: 14 }}
-            onPress={() => setShouldStartAnimate(true)}
-          />
+          <Animated.View style={[styles.buttonGroupView, positionDisappear]}>
+            <ButtonAtom
+              customStyles={styles.leftButtonStyle}
+              text="No"
+              buttonTextStyle={{ fontSize: 14 }}
+              onPress={() => navigation.goBack()}
+            />
+            <ButtonAtom
+              customStyles={styles.rightButtonStyle}
+              text="Yes Let's Go"
+              buttonTextStyle={{ fontSize: 14 }}
+              onPress={() => setShouldStartAnimate(true)}
+            />
+          </Animated.View>
         </Animated.View>
+        <SignUpFormMolecule shouldHideForm={shouldHideForm} />
       </Animated.View>
-      <SignUpFormMolecule shouldHideForm={shouldHideForm} />
     </SafeAreaView>
   );
 };

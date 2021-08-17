@@ -1,5 +1,11 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
+import {
+  View,
+  StyleSheet,
+  Dimensions,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import FadeAwayContainer from '../../hoc/FadeAwayContainer';
 import ButtonAtom from '../atoms/ButtonAtom';
 import InputAtom from '../atoms/InputAtom';
@@ -13,42 +19,47 @@ const SignUpFormMolecule = ({ shouldHideForm = true }) => {
   const [name, setName] = useState('');
   const [surname, setSurname] = useState('');
   return (
-    <FadeAwayContainer duration={125} shouldHideChildren={shouldHideForm}>
-      <View style={styles.textView}>
-        <TextAtom
-          customStyle={styles.largeText}
-          text="Who drives this vecihle?"
-        />
-        <TextAtom
-          customStyle={styles.smallText}
-          text="You can change this later"
-        />
-      </View>
-      <View>
-        <InputAtom
-          value={name}
-          onChangeText={(value) => setName(value)}
-          placeholder="First Name"
-          textAlign="left"
-          customStyle={styles.inputStyle}
-        />
-        <InputAtom
-          value={surname}
-          onChangeText={(value) => {
-            console.log(value);
-            setSurname(value);
-          }}
-          textAlign="left"
-          placeholder="Last Name"
-          customStyle={styles.inputStyle}
-        />
-        <ButtonAtom
-          customStyles={styles.buttonStyle}
-          text="Submit"
-          onPress={() => null}
-        />
-      </View>
-    </FadeAwayContainer>
+  
+      <FadeAwayContainer duration={125} shouldHideChildren={shouldHideForm}>
+        <View style={styles.textView}>
+          <TextAtom
+            customStyle={styles.largeText}
+            text="Who drives this vecihle?"
+          />
+          <TextAtom
+            customStyle={styles.smallText}
+            text="You can change this later"
+          />
+        </View>
+        <View>
+          <InputAtom
+            value={name}
+            onChangeText={(value) => setName(value)}
+            placeholder="First Name"
+            textAlign="left"
+            maxLength={15}
+            customStyle={styles.inputStyle}
+          />
+          <InputAtom
+            value={surname}
+            onChangeText={(value) => {
+              console.log(value);
+              setSurname(value);
+            }}
+            maxLength={15}
+            
+            textAlign="left"
+            placeholder="Last Name"
+            customStyle={styles.inputStyle}
+          />
+          <ButtonAtom
+            customStyles={styles.buttonStyle}
+            text="Submit"
+            onPress={() => null}
+          />
+        </View>
+      </FadeAwayContainer>
+    
   );
 };
 
@@ -65,7 +76,6 @@ const styles = StyleSheet.create({
   buttonStyle: {
     marginTop: 20,
     width: Dimensions.get('window').width - 40,
-
   },
   textView: {
     alignSelf: 'flex-start',
