@@ -12,6 +12,7 @@ import FadeAwayContainer from '../../hoc/FadeAwayContainer';
 const EnterCodePage = ({}) => {
   const [code, setCode] = useState('');
   const [hideView, setHideView] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [shouldTranslateLogo, setShouldTranslateLogo] = useState(false);
   const translateY = useRef(new Animated.Value(0)).current;
 
@@ -37,7 +38,6 @@ const EnterCodePage = ({}) => {
   }, []);
 
   const position = {
-
     transform: [
       {
         translateY: translateY.interpolate({
@@ -61,18 +61,26 @@ const EnterCodePage = ({}) => {
         >
           <TextAtom text="To get started, add your vehicle reg below" />
           <SharedElement id="input-atom">
-            
             <InputAtom
               onChangeText={(val) => setCode(val)}
               placeholder="ENTER REG"
               customStyle={styles.inputStyle}
+              maxLength={8}
+              autoCapitalize="characters"
             />
           </SharedElement>
 
           <ButtonAtom
+            loading={loading}
             customStyles={styles.buttonStyle}
             text="Submit"
-            onPress={() => navigation.navigate('SignUp', { text: code })}
+            onPress={() => {
+              setLoading(true);
+              setTimeout(() => {
+                navigation.navigate('SignUp', { text: code });
+                setLoading(false);
+              }, 1000);
+            }}
           />
         </FadeAwayContainer>
       </View>

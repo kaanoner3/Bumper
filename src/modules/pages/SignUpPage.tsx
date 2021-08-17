@@ -15,12 +15,13 @@ import HeaderMolecule from '../molecules/HeaderMolecule';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import CarLogo from '../../../assets/car-example.png';
 import ButtonAtom from '../atoms/ButtonAtom';
+import SignUpFormMolecule from '../molecules/SignUpFormMolecule';
 
 const SignUpPage = ({}) => {
   const navigation = useNavigation();
   const [shouldStartAimate, setShouldStartAnimate] = useState(false);
+  const [shouldHideForm, setShouldHideForm] = useState(true);
   const animatedValue = useRef(new Animated.Value(0)).current;
-  const scale = useRef(new Animated.Value(1)).current;
 
   const route = useRoute();
   const { text } = route.params;
@@ -31,13 +32,13 @@ const SignUpPage = ({}) => {
         toValue: 1,
         duration: 300,
         useNativeDriver: false,
-      }).start();
+      }).start(() => setShouldHideForm(false));
     }
   }, [shouldStartAimate]);
 
   let animatedHeight = animatedValue.interpolate({
     inputRange: [0, 1],
-    outputRange: [400, 200],
+    outputRange: [450, 250],
   });
   const positionDisappear = {
     opacity: animatedValue.interpolate({
@@ -53,7 +54,7 @@ const SignUpPage = ({}) => {
       },
     ],
   };
-  const scaleSmaller = {
+  const scaleImage = {
     transform: [
       {
         scale: animatedValue.interpolate({
@@ -73,28 +74,18 @@ const SignUpPage = ({}) => {
       },
     ],
   };
-  const translateYImageView = {
+  const translateImageView = {
     transform: [
       {
         translateY: animatedValue.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, 80],
+          outputRange: [0, 70],
         }),
       },
       {
         translateX: animatedValue.interpolate({
           inputRange: [0, 1],
           outputRange: [0, 20],
-        }),
-      },
-    ],
-  };
-  const translateX = {
-    transform: [
-      {
-        translateX: animatedValue.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 300],
         }),
       },
     ],
@@ -124,37 +115,17 @@ const SignUpPage = ({}) => {
           </Animated.View>
           <View style={[{ flex: 1 }]}>
             <Animated.View>
-              <Animated.Text
-                style={[
-                  {
-                    marginTop: 20,
-                    color: '#fff',
-                    fontSize: 20,
-                    fontWeight: '700',
-                  },
-                  translateY,
-                ]}
-              >
+              <Animated.Text style={[styles.largeText, translateY]}>
                 Scirocco 2019
               </Animated.Text>
-              <Animated.Text
-                style={[
-                  {
-                    color: '#fff',
-                    fontSize: 14,
-                    fontWeight: '500',
-                    marginTop: 5,
-                  },
-                  translateY,
-                ]}
-              >
+              <Animated.Text style={[styles.smallText, translateY]}>
                 Volkswagen
               </Animated.Text>
             </Animated.View>
-            <Animated.View style={[styles.imageView, translateYImageView]}>
+            <Animated.View style={[styles.imageView, translateImageView]}>
               <Animated.Image
                 source={CarLogo}
-                style={[styles.imageStyle, scaleSmaller]}
+                style={[styles.imageStyle, scaleImage]}
               />
             </Animated.View>
           </View>
@@ -165,7 +136,7 @@ const SignUpPage = ({}) => {
             customStyles={styles.leftButtonStyle}
             text="No"
             buttonTextStyle={{ fontSize: 14 }}
-            onPress={() => null}
+            onPress={() => navigation.goBack()}
           />
           <ButtonAtom
             customStyles={styles.rightButtonStyle}
@@ -175,6 +146,7 @@ const SignUpPage = ({}) => {
           />
         </Animated.View>
       </Animated.View>
+      <SignUpFormMolecule shouldHideForm={shouldHideForm} />
     </SafeAreaView>
   );
 };
@@ -196,6 +168,18 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'flex-end',
   },
+  largeText: {
+    marginTop: 20,
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: '700',
+  },
+  smallText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '500',
+    marginTop: 5,
+  },
   imageStyle: {
     position: 'absolute',
     bottom: 0,
@@ -212,12 +196,12 @@ const styles = StyleSheet.create({
   },
   leftButtonStyle: {
     width: 80,
-    height: 30,
+    height: 40,
     backgroundColor: '#000',
   },
   rightButtonStyle: {
     width: 160,
-    height: 30,
+    height: 40,
   },
   inputStyle: {
     marginTop: 10,

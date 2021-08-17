@@ -27,9 +27,7 @@ const InputAtom: FC<InputProps> = ({
       onChangeText={(text) => onChangeText(text)}
       value={value}
       placeholderTextColor="#fff"
-      autoCapitalize="characters"
-
-      maxLength={8}
+      
       placeholder={placeholder}
       style={[styles.default, customStyle]}
       {...otherProps}

@@ -2,15 +2,17 @@ import React, { FC, useRef, useEffect } from 'react';
 import { Animated, View, StyleSheet } from 'react-native';
 
 interface FadeAwayContainerProps {
-  height: number;
-  width: number;
+  height?: number;
+  width?: number;
   shouldHideChildren: boolean;
+  duration?: number
 }
 
 const FadeAwayContainer: FC<FadeAwayContainerProps> = ({
   children,
   width,
   height,
+  duration = 500,
   shouldHideChildren = true,
 }) => {
   const contentOpacity = useRef(new Animated.Value(0)).current;
