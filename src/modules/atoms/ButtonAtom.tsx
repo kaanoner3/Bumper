@@ -9,6 +9,7 @@ import {
   TouchableOpacityProps,
   Dimensions,
   ActivityIndicator,
+  TextStyle,
 } from 'react-native';
 import TextAtom from './TextAtom';
 
@@ -17,6 +18,7 @@ interface ButtonAtomProps {
   text?: string;
   customStyles?: StyleProp<TouchableOpacityProps> & StyleProp<ViewStyle>;
   loading?: boolean;
+  buttonTextStyle?: StyleProp<TextStyle>
 }
 
 
@@ -25,6 +27,7 @@ const ButtonAtom: FC<ButtonAtomProps> = ({
   text = '',
   customStyles = {},
   loading = false,
+  buttonTextStyle = {}
 }) => {
   return (
     <TouchableOpacity style={[styles.default, customStyles]} onPress={onPress}>
@@ -35,7 +38,7 @@ const ButtonAtom: FC<ButtonAtomProps> = ({
           color="#fff"
         />
       )}
-      <TextAtom customStyle={styles.textStyle} text={text} />
+      <TextAtom customStyle={[styles.textStyle, buttonTextStyle]} text={text} />
     </TouchableOpacity>
   );
 };

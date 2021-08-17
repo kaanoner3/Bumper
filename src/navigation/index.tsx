@@ -1,19 +1,43 @@
-import React from "react"
+import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  createSharedElementStackNavigator,
+} from 'react-navigation-shared-element';
+
+
 import EnterCodePage from '../modules/pages/EnterCodePage';
+import SignUpPage from '../modules/pages/SignUpPage';
 
+const Stack = createSharedElementStackNavigator();
 
-const Stack = createNativeStackNavigator();
+const RootNavigator = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator headerMode="none" initialRouteName="EnterCode" mode="modal">
+        <Stack.Screen name="EnterCode" component={EnterCodePage} />
+        <Stack.Screen
+          options={() => ({            
+            useNativeDriver: true,
+            gestureEnabled: false,
+            transitionSpec: {
+              open: { animation: 'timing', config: { duration: 300 } },
+              close: { animation: 'timing', config: { duration: 300 } },
+            },
+            cardStyleInterpolator: ({ current: { progress } }) => {
+                return {
+                cardStyle: {
+                  opacity: progress,
+                  
+                },
+              };
+            },
+          })}
+          name="SignUp"
+          component={SignUpPage as any}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-const RootNavigator = () => { 
-    return (
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="Home" component={EnterCodePage} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    );
-  }
-
-  export default RootNavigator
+export default RootNavigator;

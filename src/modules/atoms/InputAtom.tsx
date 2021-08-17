@@ -12,19 +12,27 @@ import {
 interface InputAtomProps {
   placeholder?: string;
   customStyle?: StyleProp<TextStyle>;
-  
 }
 type InputProps = TextInputProps & InputAtomProps;
 
-const InputAtom: FC<InputProps> = ({ value, customStyle, placeholder, onChangeText = () => null }) => {
+const InputAtom: FC<InputProps> = ({
+  value,
+  customStyle,
+  placeholder,
+  onChangeText = () => null,
+  ...otherProps
+}) => {
   return (
     <TextInput
       onChangeText={(text) => onChangeText(text)}
       value={value}
       placeholderTextColor="#fff"
-    
+      autoCapitalize="characters"
+
+      maxLength={8}
       placeholder={placeholder}
       style={[styles.default, customStyle]}
+      {...otherProps}
     />
   );
 };
@@ -32,12 +40,13 @@ const InputAtom: FC<InputProps> = ({ value, customStyle, placeholder, onChangeTe
 const styles = StyleSheet.create({
   default: {
     width: Dimensions.get('window').width - 60,
-    height:50,
+    height: 50,
     backgroundColor: 'rgba(65, 76,109,1)',
     borderRadius: 10,
-    textAlign:'center',
-    fontWeight:'700',
-    fontSize:20
+    textAlign: 'center',
+    fontWeight: '700',
+    fontSize: 20,
+    color: '#fff',
   },
 });
 
