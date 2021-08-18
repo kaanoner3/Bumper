@@ -7,14 +7,15 @@ import {
 
 import EnterCodePage from '../modules/pages/EnterCodePage';
 import SignUpPage from '../modules/pages/SignUpPage';
+import { Routes } from './routes';
 
 const Stack = createSharedElementStackNavigator();
 
 const RootNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator headerMode="none" initialRouteName="EnterCode" mode="modal">
-        <Stack.Screen name="EnterCode" component={EnterCodePage} />
+      <Stack.Navigator headerMode="none" initialRouteName={Routes.ENTER_CODE_SCREEN} mode="modal">
+        <Stack.Screen name={Routes.ENTER_CODE_SCREEN} component={EnterCodePage} />
         <Stack.Screen
           options={() => ({            
             useNativeDriver: true,
@@ -32,7 +33,7 @@ const RootNavigator = () => {
               };
             },
           })}
-          name="SignUp"
+          name={Routes.SIGNUP_SCREEN}
           component={SignUpPage as any}
         />
       </Stack.Navigator>

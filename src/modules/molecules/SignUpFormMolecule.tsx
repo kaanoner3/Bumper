@@ -43,7 +43,6 @@ const SignUpFormMolecule = ({ shouldHideForm = true }) => {
           <InputAtom
             value={surname}
             onChangeText={(value) => {
-              console.log(value);
               setSurname(value);
             }}
             maxLength={15}

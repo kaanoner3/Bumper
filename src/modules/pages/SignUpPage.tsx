@@ -33,7 +33,6 @@ const SignUpPage = ({}) => {
   const { text } = route.params;
 
   useEffect(() => {
-    console.log(keyboardVisible)
     if (keyboardVisible) {
       Animated.timing(animatedValueForKeyobard, {
         toValue: 1,
