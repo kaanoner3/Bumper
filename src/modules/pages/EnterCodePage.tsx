@@ -8,6 +8,7 @@ import { SharedElement } from 'react-navigation-shared-element';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FadeAwayContainer from '../../hoc/FadeAwayContainer';
+import { Routes } from '../../navigation/routes';
 
 const EnterCodePage = ({}) => {
   const [code, setCode] = useState('');
@@ -77,7 +78,7 @@ const EnterCodePage = ({}) => {
             onPress={() => {
               setLoading(true);
               setTimeout(() => {
-                navigation.navigate('SignUp', { text: code });
+                navigation.navigate(Routes.SIGNUP_SCREEN, { text: code });
                 setLoading(false);
               }, 1000);
             }}

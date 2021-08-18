@@ -36,13 +36,13 @@ const SignUpPage = ({}) => {
     if (keyboardVisible) {
       Animated.timing(animatedValueForKeyobard, {
         toValue: 1,
-        duration: 500,
+        duration: 300,
         useNativeDriver: true,
       }).start();
     } else {
       Animated.timing(animatedValueForKeyobard, {
         toValue: 0,
-        duration: 500,
+        duration: 300,
         useNativeDriver: true,
       }).start();
     }
@@ -112,12 +112,12 @@ const SignUpPage = ({}) => {
       },
     ],
   };
-  const translateScreen = {
+  const translateYOnKeyboardVisible = {
     transform: [
       {
         translateY: animatedValueForKeyobard.interpolate({
           inputRange: [0, 1],
-          outputRange: [0, -150],
+          outputRange: [0, -180],
         }),
       },
     ],
@@ -128,7 +128,7 @@ const SignUpPage = ({}) => {
         title="Sign Up"
         leftButtonAction={() => navigation.goBack()}
       />
-      <Animated.View style={translateScreen}>
+      <Animated.View style={translateYOnKeyboardVisible}>
         <Animated.View style={[styles.contentView, { height: animatedHeight }]}>
           <View style={{ flex: 1, padding: 10 }}>
             <SharedElement id="input-atom">
