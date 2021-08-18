@@ -1,5 +1,7 @@
 # Bumper
 
+RN Animation demo
+
 Setup:
 
 - Install expo-cli if it doesn't exist. "yarn add global expo-cli"
